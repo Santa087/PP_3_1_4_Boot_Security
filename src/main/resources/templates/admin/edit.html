@@ -31,18 +31,21 @@
     <input type="password" th:field="*{password}" id="password"/>
     <br/>
 
-    <div>
-        <p>Roles:</p>
-        <div th:each="r : ${allRoles}">
-            <label>
-                <input type="checkbox"
-                       name="roleIds"
-                       th:value="${r.id}"
-                       th:checked="${user.roles.contains(r)}"/>
-                <span th:text="${r.name}"></span>
-            </label>
-        </div>
+    <div class="form-group text-center">
+        <label for="roles"><b>Role</b></label>
+        <select id="roles"
+                class="form-control"
+                name="roleIds"
+                multiple
+                size="2">
+            <option th:each="r : ${allRoles}"
+                    th:value="${r.id}"
+                    th:text="${#strings.replace(r.name,'ROLE_','')}"
+                    th:selected="${user.roles.contains(r)}">
+            </option>
+        </select>
     </div>
+
 
     <br/>
     <input type="submit" value="Update">

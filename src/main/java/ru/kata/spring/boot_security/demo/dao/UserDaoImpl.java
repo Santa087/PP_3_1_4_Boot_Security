@@ -22,10 +22,18 @@ public class UserDaoImpl implements UserDao {
     }
 
 
+
     @Override
     public User findById(Long id) {
-        return entityManager.find(User.class, id);
+        List<User> users = entityManager.createQuery(
+                        "select u from User u left join fetch u.roles where u.id = :id", User.class)
+                .setParameter("id", id)
+                .setMaxResults(1)
+                .getResultList();
+
+        return users.isEmpty() ? null : users.get(0);
     }
+
 
     @Override
     public void save(User user) {
@@ -40,8 +48,13 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void deleteById(Long id) {
         User user = entityManager.find(User.class, id);
-        if (user != null) entityManager.remove(user);
+        if (user != null) {
+            entityManager.remove(user);
+        }
     }
+
+
+
 
     @Override
     public Optional<User> findByUsername(String username) {

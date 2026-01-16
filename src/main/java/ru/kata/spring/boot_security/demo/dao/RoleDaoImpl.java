@@ -16,14 +16,13 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public Optional<Role> findByName(String name) {
-        List<Role> roles = em.createQuery(
-                        "select r from Role r where r.name = :name", Role.class)
+        return em.createQuery("select r from Role r where r.name = :name", Role.class)
                 .setParameter("name", name)
-                .setMaxResults(1)
-                .getResultList();
-
-        return roles.stream().findFirst();
+                .getResultStream()
+                .findFirst();
     }
+
+
 
 
     @Override
