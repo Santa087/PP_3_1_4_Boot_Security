@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit</title>
+</head>
+<body>
+
+<form th:action="@{/logout}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <button type="submit">Logout</button>
+</form>
+
+<form th:method="POST" th:action="@{/admin/update}" th:object="${user}">
+    <input type="hidden" th:field="*{id}"/>
+    <input type="hidden" th:field="*{username}"/>
+
+    <p>
+        Username: <span th:text="${user.username}"></span>
+    </p>
+
+    <label for="name">Name:</label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <br/>
+
+    <label for="surname">Surname:</label>
+    <input type="text" th:field="*{surname}" id="surname"/>
+    <br/>
+
+    <label for="password">New password (leave empty to keep current):</label>
+    <input type="password" th:field="*{password}" id="password"/>
+    <br/>
+
+    <div>
+        <p>Roles:</p>
+        <div th:each="r : ${allRoles}">
+            <label>
+                <input type="checkbox"
+                       name="roleIds"
+                       th:value="${r.id}"
+                       th:checked="${user.roles.contains(r)}"/>
+                <span th:text="${r.name}"></span>
+            </label>
+        </div>
+    </div>
+
+    <br/>
+    <input type="submit" value="Update">
+</form>
+
+</body>
+</html>
