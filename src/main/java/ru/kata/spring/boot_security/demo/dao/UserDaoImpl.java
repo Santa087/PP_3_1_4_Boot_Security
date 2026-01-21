@@ -47,11 +47,12 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean deleteById(Long id) {
-        int affected = entityManager.createQuery("delete from User u where u.id = :id")
-                .setParameter("id", id)
-                .executeUpdate();
-        return affected > 0;
+        User user = entityManager.find(User.class, id);
+        if (user == null) return false;
+        entityManager.remove(user);
+        return true;
     }
+
 
 
 
