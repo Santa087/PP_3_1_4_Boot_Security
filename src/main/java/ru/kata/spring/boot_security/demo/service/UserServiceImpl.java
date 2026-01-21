@@ -70,8 +70,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
-        userDao.deleteById(id);
+        boolean deleted = userDao.deleteById(id);
+        if (!deleted) {
+            throw new IllegalArgumentException("User not found: id=" + id);
+        }
     }
+
 
     @Override
     @Transactional(readOnly = true)
