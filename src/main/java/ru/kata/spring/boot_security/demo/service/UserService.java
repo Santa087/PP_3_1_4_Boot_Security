@@ -9,9 +9,10 @@ public interface UserService {
     List<User> getAll();
     User getById(Long id);
 
-    void create(User user, List<Long> roleIds);
-    void update(User user, List<Long> roleIds);
+    User create(User user, java.util.List<Long> roleIds);
+    User update(Long id, User user, java.util.List<Long> roleIds);
 
     void delete(Long id);
     Optional<User> findByUsername(String username);
 }
+

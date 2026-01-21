@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
@@ -18,10 +20,18 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/admin")
+    public String adminPage() {
+        return "admin/index";
+    }
+
     @GetMapping("/user")
     public String userPage(Model model, Principal principal) {
-        User user = userService.findByUsername(principal.getName()).orElseThrow();
+        User user = userService.findByUsername(principal.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "User not found: " + principal.getName()));
         model.addAttribute("user", user);
         return "user/index";
     }
+
 }
